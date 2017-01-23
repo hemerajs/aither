@@ -1,6 +1,6 @@
-# aither
-
 ![aither](https://github.com/hemerajs/aither/blob/master/logo.png?raw=true)
+
+# aither
 
 This configuration will setup following:
 
