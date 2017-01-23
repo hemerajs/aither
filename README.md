@@ -4,9 +4,9 @@
 
 This configuration will setup following:
 
-- Hapi server which expose an example `/add` endpoint to calculate two number
-- NATS server
-- Zipkin dashboard to monitoring your distributed system (with volumes)
+- [Hapi](https://github.com/hapijs/hapi) server which expose an example `/add` endpoint to calculate two number.
+- [NATS](https://github.com/nats-io/gnatsd) server.
+- [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system (with volumes).
 
 ## Running the system
 ```sh
