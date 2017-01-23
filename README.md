@@ -5,7 +5,7 @@
 This configuration will setup:
 
 * [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the NATS system.
-* A microservice which is responsible to add two numbers.
+* [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) which is responsible to add two numbers.
 * [NATS](https://github.com/nats-io/gnatsd) server.
 * [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system (with volumes).
 
