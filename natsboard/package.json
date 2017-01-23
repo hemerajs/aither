@@ -1,0 +1,11 @@
+{
+  "name": "hemera-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Dustin Deus <deusdustin@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "natsboard": "4.0.2"
+  }
+}

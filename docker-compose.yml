@@ -49,6 +49,15 @@ services:
       ZIPKIN_PORT: 9411
       HEMERA_LOG_LEVEL: info
 
+  natsboard:
+    build:
+      context: "./natsboard"
+    depends_on:
+      - nats
+    links:
+      - nats
+    ports:
+      - "3000:3000"
 
   zipkin-storage:
     image: openzipkin/zipkin-mysql
