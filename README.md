@@ -11,6 +11,7 @@ This configuration will setup:
 * [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) which is responsible to add two numbers.
 * [NATS](https://github.com/nats-io/gnatsd) server.
 * [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system (with volumes).
+* [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
 
 ## Running the system
 ```sh
@@ -21,6 +22,10 @@ docker-compose up
 ```
 docker-compose scale worker=5
 ```
+
+### NATS dashboard
+
+[http://localhost:3000/](http://localhost:3000/)
 
 ### NATS monitoring endpoint
 
