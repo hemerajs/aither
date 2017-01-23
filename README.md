@@ -1,5 +1,7 @@
 # aither
 
+![aither](https://github.com/hemerajs/aither/blob/master/logo.png?raw=true)
+
 This configuration will setup following:
 
 - Hapi server which expose an example `/add` endpoint to calculate two number
