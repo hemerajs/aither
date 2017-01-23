@@ -8,12 +8,12 @@ This configuration will setup following:
 - NATS server
 - Zipkin dashboard to monitoring your distributed system (with volumes)
 
-## Installing
+## Running the system
 ```sh
 docker-compose up
 ```
 
-## Scaling
+## Scaling the system
 ```
 docker-compose scale worker=5
 ```
