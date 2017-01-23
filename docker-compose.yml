@@ -1,0 +1,86 @@
+version: "2.0"
+
+services:
+  nats:
+    build:
+      context: "./nats"
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+    hostname: nats-server
+
+  api:
+    build:
+      context: "./api"
+    depends_on:
+      - nats
+      - zipkin
+    links:
+      - zipkin
+    environment:
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      API_PORT: 8789
+      API_HOST: 0.0.0.0
+      HEMERA_LOG_LEVEL: info
+    ports:
+      - "8789:8789"
+    expose:
+      - "8789"
+
+  worker:
+    build:
+      context: "./worker"
+    links:
+      - nats
+      - zipkin
+    depends_on:
+      - nats
+    restart: always
+    environment:
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      HEMERA_LOG_LEVEL: info
+
+
+  zipkin-storage:
+    image: openzipkin/zipkin-mysql
+    container_name: mysql
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    expose:
+      - "9411"
+    ports:
+      # Listen port for the Scribe transport
+      - 9410:9410
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+    depends_on:
+      - zipkin-storage
+
+  zipkin-dependencies:
+    image: openzipkin/zipkin-dependencies
+    container_name: zipkin-dependencies
+    entrypoint: crond -f
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+      # Add the baked-in username and password for the zipkin-mysql image
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+      # Uncomment to adjust memory used by the dependencies job
+      # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
+    depends_on:
+      - zipkin-storage

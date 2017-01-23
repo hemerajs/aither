@@ -1,0 +1,15 @@
+{
+  "name": "hemera-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Dustin Deus <deusdustin@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^4.2.0",
+    "hapi": "^16.1.0",
+    "hemera-zipkin": "^0.1.70",
+    "nats": "^0.7.2",
+    "nats-hemera": "^0.3.11"
+  }
+}
