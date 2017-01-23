@@ -2,6 +2,9 @@
 
 # aither
 
+Aither shows an approach how to bootstrap a microservice system with [Hemera](https://github.com/hemerajs/hemera) and docker.
+You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to carry about service-discovery or load-balancing.
+
 This configuration will setup:
 
 * [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the NATS system.
