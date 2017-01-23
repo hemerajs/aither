@@ -7,7 +7,7 @@ You can scale your worker in seconds and because we use NATS as “nervous syste
 
 This configuration will setup:
 
-* [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the NATS system.
+* [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the Hemera system.
 * [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) which is responsible to add two numbers.
 * [NATS](https://github.com/nats-io/gnatsd) server.
 * [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system (with volumes).
