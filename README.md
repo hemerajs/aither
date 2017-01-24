@@ -34,7 +34,7 @@ docker-compose scale worker=5 api=2
 npm install -g artillery
 artillery run loadtest.yml
 ```
-Print the html artillery report with `artillery report <json.file>`
+Print the html artillery report with `artillery report <report.json>`
 
 ## Start a request against load balancer
 
