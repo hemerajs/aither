@@ -1,5 +1,5 @@
 ![aither](https://github.com/hemerajs/aither/blob/master/logo.png?raw=true)
-
+![aither](https://github.com/hemerajs/aither/blob/master/aither-stack.png?raw=true)
 # aither
 
 Aither shows an approach how to bootstrap a microservice system with [Hemera](https://github.com/hemerajs/hemera) and docker.
