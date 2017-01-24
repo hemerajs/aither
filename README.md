@@ -52,7 +52,3 @@ http://localhost:8182/api/add?a=1&b=10
 ### Zipkin dashboard
 
 [http://localhost:9411/](http://localhost:9411/)
-
-### Example REST endpoint
-
-[http://localhost:8789/add?a=4&b=8](http://localhost:8789/api/add?a=4&b=8)
