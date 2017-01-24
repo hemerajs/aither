@@ -3,13 +3,13 @@
 # aither
 
 Aither shows an approach how to bootstrap a microservice system with [Hemera](https://github.com/hemerajs/hemera) and docker.
-You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to carry about service-discovery or load-balancing.
+You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to carry about service-discovery or load-balancing of hemera-services. We use traefik to load-balancing the api-gateway.
 
 This configuration will setup:
 
-* [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the Hemera services.
-* [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) which is responsible to add two numbers.
-* [NATS](https://github.com/nats-io/gnatsd) server the messaging system.
+* [Hapi](https://github.com/hapijs/hapi) http server which act as api-gataway to the Hemera services.
+* [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) example which is responsible to add two numbers.
+* [NATS](https://github.com/nats-io/gnatsd) server the underlying messaging system for Hemera.
 * [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system.
 * [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
 * [Traefik](https://traefik.io/) modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
@@ -56,3 +56,6 @@ http://localhost:8182/api/add?a=1&b=10
 ### Zipkin dashboard
 
 [http://localhost:9411/](http://localhost:9411/)
+
+### Thank you
+thanks most of all to the community who create these awesome opensource software and thereby making it possible.
