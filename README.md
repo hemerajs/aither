@@ -102,5 +102,7 @@ Complete report
     200: 126100
 ```
 
+The full report you can find [here.](https://github.com/hemerajs/aither/tree/master/digitalocean-report)
+
 ### Thank you
 thanks most of all to the community who create these awesome opensource software and thereby making it possible.
