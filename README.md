@@ -54,4 +54,4 @@ http://localhost:8182/api/add?a=1&b=10
 [http://localhost:9411/](http://localhost:9411/)
 
 ### Thank you
-thanks most of all to the community who create those awesome tools and gave me the possibility to make this possible.
+thanks most of all to the community who create these awesome opensource software and thereby making it possible.
