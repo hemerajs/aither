@@ -14,6 +14,10 @@ This configuration will setup:
 * [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
 * [Traefik](https://traefik.io/) modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
 
+## Architecture
+
+![aither](https://github.com/hemerajs/aither/blob/master/aither-architecture.png?raw=true)
+
 ## Running the system
 ```sh
 docker-compose up
