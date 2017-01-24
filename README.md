@@ -62,6 +62,7 @@ http://localhost:8182/api/add?a=1&b=10
 
 * **Server**: 12 CPUs, 32GB RAM, 320GB SSD
 * **Scaling**: 25 APIs, 100 workers
+* **Load balancing**: Traefik in round-roubin for API services. NATS supports random only.
 
 #### Load-test:
 * **Step-1**: Warm-up phase
