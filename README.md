@@ -31,7 +31,7 @@ npm install -g artillery
 artillery run loadtest.yml
 ```
 
-# Start a request load balanced by traefik
+## Start a request against load balancer
 
 ```
 http://localhost:8182/api/add?a=1&b=10
