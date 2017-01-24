@@ -1,0 +1,12 @@
+config:
+  target: "http://localhost:8182"
+  phases:
+    #Ramp up arrival rate from 25 to 50 over 2 minutes:
+  -
+    duration: 30
+    arrivalRate: 25
+    rampTo: 100
+scenarios:
+  - flow:
+      - get:
+          url: "/api/add?a=4&b=80"

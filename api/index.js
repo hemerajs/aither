@@ -16,7 +16,7 @@ server.connection({
 })
 
 const hemera = new Hemera(nats, {
-  logLevel: process.env.HEMERA_LOG_LEVEL || 'info'
+  logLevel: process.env.HEMERA_LOG_LEVEL
 })
 
 HemeraZipkin.options = {
@@ -30,7 +30,7 @@ hemera.ready(() => {
 
   server.route({
     method: 'GET',
-    path: '/add',
+    path: '/api/add',
     handler: function (request, reply) {
 
       hemera.act({

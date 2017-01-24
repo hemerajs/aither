@@ -9,9 +9,10 @@ This configuration will setup:
 
 * [Hapi](https://github.com/hapijs/hapi) server which act as api-gataway to the Hemera services.
 * [Microservice](https://github.com/hemerajs/aither/blob/master/worker/index.js) which is responsible to add two numbers.
-* [NATS](https://github.com/nats-io/gnatsd) server.
-* [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system (with volumes).
+* [NATS](https://github.com/nats-io/gnatsd) server the messaging system.
+* [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system.
 * [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
+* [Traefik](https://traefik.io/) modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
 
 ## Running the system
 ```sh
@@ -20,8 +21,25 @@ docker-compose up
 
 ## Scaling the system
 ```
-docker-compose scale worker=5
+docker-compose scale worker=5 api=2
 ```
+
+## Run load test
+
+```
+npm install -g artillery
+artillery run loadtest.yml
+```
+
+# Start a request load balanced by traefik
+
+```
+http://localhost:8182/api/add?a=1&b=10
+```
+
+### Traefik dashboard
+
+[http://localhost:8181/](http://localhost:8181/)
 
 ### NATS dashboard
 
@@ -37,4 +55,4 @@ docker-compose scale worker=5
 
 ### Example REST endpoint
 
-[http://localhost:8789/add?a=4&b=8](http://localhost:8789/add?a=4&b=8)
+[http://localhost:8789/add?a=4&b=8](http://localhost:8789/api/add?a=4&b=8)

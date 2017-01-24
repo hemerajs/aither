@@ -18,6 +18,11 @@ services:
       - zipkin
     links:
       - zipkin
+    labels:
+      - "traefik.backend=api"
+      - "traefik.frontend.rule=PathPrefix: /api"
+      - "traefik.port=8789"
+      - "traefik.frontend.entryPoints=http"
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
@@ -26,11 +31,7 @@ services:
       ZIPKIN_PORT: 9411
       API_PORT: 8789
       API_HOST: 0.0.0.0
-      HEMERA_LOG_LEVEL: info
-    ports:
-      - "8789:8789"
-    expose:
-      - "8789"
+      HEMERA_LOG_LEVEL: silent
 
   worker:
     build:
@@ -47,7 +48,7 @@ services:
       NATS_PW: T0pS3cr3t
       ZIPKIN_URL: zipkin
       ZIPKIN_PORT: 9411
-      HEMERA_LOG_LEVEL: info
+      HEMERA_LOG_LEVEL: silent
 
   natsboard:
     build:
@@ -58,6 +59,7 @@ services:
       - nats
     ports:
       - "3000:3000"
+      - "3001:3001"
 
   zipkin-storage:
     image: openzipkin/zipkin-mysql
@@ -93,3 +95,13 @@ services:
       # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
     depends_on:
       - zipkin-storage
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - "8182:80"
+      - "8181:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
