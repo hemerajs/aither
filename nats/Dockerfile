@@ -1,7 +1,5 @@
 FROM alpine:3.4
 
-MAINTAINER Touchify <dev@touchify.co> (@touchify)
-
 # Setting up environment
 ENV NATS_VERSION=0.9.4 \
     NATS_CLUSTER_USER=ruser \
