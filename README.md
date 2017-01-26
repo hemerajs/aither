@@ -13,7 +13,7 @@ This configuration will setup:
 * [Zipkin](http://zipkin.io/) dashboard to monitoring your distributed system.
 * [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
 * [Traefik](https://traefik.io/) modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
-* [Redis](https://redis.io) In memory cache for hemera.
+* [Redis](https://redis.io) in memory cache for Hemera.
 
 ## Architecture
 
