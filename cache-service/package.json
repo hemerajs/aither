@@ -1,0 +1,13 @@
+{
+  "name": "hemera-cache-provider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Dustin Deus <deusdustin@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "nats": "^0.7.2",
+    "nats-hemera": "^0.3.11",
+    "hemera-redis-cache": "1.0.x"
+  }
+}

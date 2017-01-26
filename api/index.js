@@ -39,14 +39,15 @@ hemera.ready(() => {
           a: request.query.a,
           b: request.query.b
         },
-        function (err, result) {
+        (err, result) => {
 
           if (err) {
 
+            console.log(err)
             return reply(Boom.wrap(err.cause, 400))
           }
 
-          reply(result)
+          return reply(result)
         })
     }
   })

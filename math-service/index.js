@@ -24,7 +24,7 @@ hemera.ready(() => {
 
   hemera.setOption('payloadValidator', 'hemera-joi')
   let Joi = hemera.exposition['hemera-joi'].joi
-  
+
   hemera.add({
     topic: 'math',
     cmd: 'add',
@@ -32,6 +32,49 @@ hemera.ready(() => {
     b: Joi.number().required()
   }, function (req, cb) {
 
-    cb(null, req.a + req.b)
+    let key = `math:add_${req.a}_${req.b}`
+    let ma = this
+
+    // check cache
+    this.act({
+      topic: 'redis-cache',
+      cmd: 'get',
+      key: key
+    }, function (err, result) {
+
+      if (err) {
+
+        return cb(err)
+      }
+
+      if (result) {
+
+        // mark this request as cached for zipkin
+        ma.delegate$.cache = 'Redis:HIT'
+
+        return cb(null, result)
+      }
+
+      // big operation
+      let operation = req.a + req.b
+
+      // update cache
+      this.act({
+        topic: 'redis-cache',
+        cmd: 'set',
+        key: key,
+        value: operation
+      }, function () {
+
+        if (err) {
+
+          return cb(err)
+        }
+
+        cb(null, operation)
+      })
+
+    })
+
   })
 })

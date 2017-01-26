@@ -7,6 +7,7 @@ services:
     expose:
       - "4222"
     ports:
+      - "4222:4222"
       - "8222:8222"
     hostname: nats-server
 
@@ -33,14 +34,15 @@ services:
       API_HOST: 0.0.0.0
       HEMERA_LOG_LEVEL: silent
 
-  worker:
+  math-service:
     build:
-      context: "./worker"
+      context: "./math-service"
     links:
       - nats
       - zipkin
     depends_on:
       - nats
+      - redis
     restart: always
     environment:
       NATS_URL: nats://nats:4222
@@ -49,6 +51,27 @@ services:
       ZIPKIN_URL: zipkin
       ZIPKIN_PORT: 9411
       HEMERA_LOG_LEVEL: silent
+
+  cache-service:
+    build:
+      context: "./cache-service"
+    links:
+      - nats
+      - zipkin
+      - redis
+    depends_on:
+      - nats
+      - redis
+    restart: always
+    environment:
+      REDIS_PORT: 6379
+      REDIS_URL: redis
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      HEMERA_LOG_LEVEL: info
 
   natsboard:
     build:
@@ -105,3 +128,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
