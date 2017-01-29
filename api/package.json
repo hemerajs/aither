@@ -10,6 +10,6 @@
     "hapi": "^16.1.0",
     "hemera-zipkin": "^0.1.70",
     "nats": "^0.7.2",
-    "nats-hemera": "^0.3.11"
+    "nats-hemera": "^0.4.1"
   }
 }
