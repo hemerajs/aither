@@ -4,9 +4,8 @@ config:
     #Ramp up arrival rate from 25 to 50 over 2 minutes:
   -
     duration: 30
-    arrivalRate: 25
-    rampTo: 100
+    arrivalRate: 60
 scenarios:
   - flow:
       - get:
-          url: "/api/add?a=4&b=80"
+          url: "/api/add?a=4&b=80&refresh=true"

@@ -37,7 +37,8 @@ hemera.ready(() => {
           topic: 'math',
           cmd: 'add',
           a: request.query.a,
-          b: request.query.b
+          b: request.query.b,
+          refresh: !!request.query.refresh
         },
         (err, result) => {
 

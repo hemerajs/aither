@@ -29,52 +29,72 @@ hemera.ready(() => {
     topic: 'math',
     cmd: 'add',
     a: Joi.number().required(),
-    b: Joi.number().required()
+    b: Joi.number().required(),
+    refresh: Joi.boolean().default(false)
   }, function (req, cb) {
 
     let key = `math:add_${req.a}_${req.b}`
     let ma = this
+    let result
 
-    // check cache
-    this.act({
-      topic: 'redis-cache',
-      cmd: 'get',
-      key: key
-    }, function (err, result) {
+    let operation = (a, b) => {
+      return a + b
+    }
 
-      if (err) {
+    // no cache
+    if (req.refresh) {
 
-        return cb(err)
-      }
-
-      if (result) {
-
-        // mark this request as cached for zipkin
-        ma.delegate$.cache = 'Redis:HIT'
-
-        return cb(null, result)
-      }
-
-      // big operation
-      let operation = req.a + req.b
+      //big operation
+      result = operation(req.a, req.b)
 
       // update cache
       this.act({
         topic: 'redis-cache',
         cmd: 'set',
         key: key,
-        value: operation
-      }, function () {
+        value: result
+      })
+
+      return cb(null, result)
+
+    } else {
+
+      // check cache
+      this.act({
+        topic: 'redis-cache',
+        cmd: 'get',
+        key: key
+      }, function (err, resp) {
 
         if (err) {
 
           return cb(err)
         }
 
-        cb(null, operation)
+        if (resp) {
+
+          // mark this request as cached for zipkin
+          ma.delegate$.cache = 'Redis:HIT'
+
+          return cb(null, resp)
+        }
+
+        //big operation
+        result = operation(req.a, req.b)
+
+        // update cache
+        this.act({
+          topic: 'redis-cache',
+          cmd: 'set',
+          key: key,
+          value: result
+        })
+
+        cb(null, result)
+
       })
 
-    })
+    }
 
   })
 })
