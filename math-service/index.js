@@ -12,17 +12,12 @@ const hemera = new Hemera(nats, {
 })
 
 hemera.use(HemeraJoi)
-
-HemeraZipkin.options = {
+hemera.use(HemeraZipkin, {
   host: process.env.ZIPKIN_URL,
   port: process.env.ZIPKIN_PORT
-}
-
-hemera.use(HemeraZipkin)
+})
 
 hemera.ready(() => {
-
-  hemera.setOption('payloadValidator', 'hemera-joi')
   let Joi = hemera.exposition['hemera-joi'].joi
 
   hemera.add({

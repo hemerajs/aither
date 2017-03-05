@@ -4,7 +4,7 @@ config:
     #Ramp up arrival rate from 25 to 50 over 2 minutes:
   -
     duration: 30
-    arrivalRate: 60
+    arrivalRate: 100
 scenarios:
   - flow:
       - get:

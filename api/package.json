@@ -8,8 +8,8 @@
   "dependencies": {
     "boom": "^4.2.0",
     "hapi": "^16.1.0",
-    "hemera-zipkin": "^0.1.70",
+    "hemera-zipkin": "^0.3.2",
     "nats": "^0.7.2",
-    "nats-hemera": "^0.4.1"
+    "nats-hemera": "^0.8.1"
   }
 }

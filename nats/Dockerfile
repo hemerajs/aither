@@ -1,7 +1,7 @@
 FROM alpine:3.4
 
 # Setting up environment
-ENV NATS_VERSION=0.9.4 \
+ENV NATS_VERSION=0.9.6 \
     NATS_CLUSTER_USER=ruser \
     NATS_CLUSTER_PASSWORD=T0pS3cr3t \
     NATS_CLUSTER_TIMEOUT=2

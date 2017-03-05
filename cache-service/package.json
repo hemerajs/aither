@@ -6,8 +6,9 @@
   "author": "Dustin Deus <deusdustin@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "hemera-joi": "^0.1.78",
+    "hemera-redis-cache": "^1.0.4",
     "nats": "^0.7.4",
-    "nats-hemera": "^0.4.1",
-    "hemera-redis-cache": "^1.0.4"
+    "nats-hemera": "^0.8.1"
   }
 }

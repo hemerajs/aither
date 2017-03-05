@@ -19,12 +19,10 @@ const hemera = new Hemera(nats, {
   logLevel: process.env.HEMERA_LOG_LEVEL
 })
 
-HemeraZipkin.options = {
+hemera.use(HemeraZipkin, {
   host: process.env.ZIPKIN_URL,
   port: process.env.ZIPKIN_PORT
-}
-
-hemera.use(HemeraZipkin)
+})
 
 hemera.ready(() => {
 
