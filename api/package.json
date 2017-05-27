@@ -6,10 +6,10 @@
   "author": "Dustin Deus <deusdustin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "boom": "^4.2.0",
-    "hapi": "^16.1.0",
-    "hemera-zipkin": "^0.3.2",
-    "nats": "^0.7.2",
-    "nats-hemera": "^0.8.1"
+    "boom": "5.0.0",
+    "hapi": "16.1.1",
+    "hemera-zipkin": "1.0.7",
+    "nats": "0.7.20",
+    "nats-hemera": "1.2.15"
   }
 }
