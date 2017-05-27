@@ -26,7 +26,7 @@ docker-compose up
 
 ## Scaling the system
 ```
-docker-compose scale worker=5 api=2
+docker-compose scale math-service=5 api=2
 ```
 
 ## Run load test
