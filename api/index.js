@@ -25,23 +25,19 @@ hemera.use(HemeraZipkin, {
 })
 
 hemera.ready(() => {
-
   server.route({
     method: 'GET',
     path: '/api/add',
     handler: function (request, reply) {
-
       hemera.act({
-          topic: 'math',
-          cmd: 'add',
-          a: request.query.a,
-          b: request.query.b,
-          refresh: !!request.query.refresh
-        },
+        topic: 'math',
+        cmd: 'add',
+        a: request.query.a,
+        b: request.query.b,
+        refresh: !!request.query.refresh
+      },
         (err, result) => {
-
           if (err) {
-
             console.log(err)
             return reply(Boom.wrap(err.cause, 400))
           }
@@ -52,11 +48,9 @@ hemera.ready(() => {
   })
 
   server.start((err) => {
-
     if (err) {
-      throw err;
+      throw err
     }
-    console.log(`Server running at: ${server.info.uri}`);
+    console.log(`Server running at: ${server.info.uri}`)
   })
-
 })

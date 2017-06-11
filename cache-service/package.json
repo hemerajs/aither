@@ -6,10 +6,10 @@
   "author": "Dustin Deus <deusdustin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "hemera-redis-cache": "1.0.17",
-    "hemera-joi": "1.1.1",
-    "hemera-zipkin": "1.0.7",
+    "hemera-redis-cache": "1.0.21",
+    "hemera-joi": "1.1.4",
+    "hemera-zipkin": "1.0.10",
     "nats": "0.7.20",
-    "nats-hemera": "1.2.15"
+    "nats-hemera": "1.3.2"
   }
 }
