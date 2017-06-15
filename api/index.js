@@ -38,8 +38,8 @@ hemera.ready(() => {
       },
         (err, result) => {
           if (err) {
-            console.log(err)
-            return reply(Boom.wrap(err.cause, 400))
+            console.error(err)
+            return reply(Boom.badRequest(err.message))
           }
 
           return reply(result)
