@@ -8,13 +8,16 @@ const nats = require('nats').connect({
 })
 
 const hemera = new Hemera(nats, {
-  logLevel: process.env.HEMERA_LOG_LEVEL
+  logLevel: process.env.HEMERA_LOG_LEVEL,
+  childLogger: true,
+  tag: 'math-instance'
 })
 
 hemera.use(HemeraJoi)
 hemera.use(HemeraZipkin, {
   host: process.env.ZIPKIN_URL,
-  port: process.env.ZIPKIN_PORT
+  port: process.env.ZIPKIN_PORT,
+  sampling: 1
 })
 
 hemera.setOption('payloadValidator', 'hemera-joi')
@@ -48,9 +51,9 @@ hemera.ready(() => {
         cmd: 'set',
         key: key,
         value: result
+      }, function () {
+        return cb(null, result)
       })
-
-      return cb(null, result)
     } else {
       // check cache
       this.act({
@@ -78,9 +81,9 @@ hemera.ready(() => {
           cmd: 'set',
           key: key,
           value: result
+        }, function () {
+          cb(null, result)
         })
-
-        cb(null, result)
       })
     }
   })
