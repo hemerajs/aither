@@ -10,7 +10,7 @@ const nats = require('nats').connect({
 const hemera = new Hemera(nats, {
   logLevel: process.env.HEMERA_LOG_LEVEL,
   childLogger: true,
-  tag: 'math-instance'
+  tag: 'hemera-math'
 })
 
 hemera.use(HemeraJoi)

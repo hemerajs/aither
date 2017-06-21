@@ -9,7 +9,7 @@
     "boom": "5.1.0",
     "hapi": "16.4.3",
     "hapi-hemera": "0.1.7",
-    "hemera-zipkin": "1.0.13",
+    "hemera-zipkin": "1.0.15",
     "nats": "0.7.20",
     "zipkin": "0.7.1",
     "zipkin-instrumentation-hapi": "0.7.1",
