@@ -32,7 +32,7 @@ services:
       ZIPKIN_PORT: 9411
       API_PORT: 8789
       API_HOST: 0.0.0.0
-      HEMERA_LOG_LEVEL: silent
+      HEMERA_LOG_LEVEL: debug
 
   math-service:
     build:
