@@ -6,13 +6,13 @@
   "author": "Dustin Deus <deusdustin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "boom": "5.1.0",
-    "hapi": "16.4.3",
-    "hapi-hemera": "0.1.7",
-    "hemera-zipkin": "1.0.15",
+    "boom": "5.2.0",
+    "hapi": "16.5.0",
+    "hapi-hemera": "0.2.1",
+    "hemera-zipkin": "1.0.21",
     "nats": "0.7.20",
-    "zipkin": "0.7.1",
-    "zipkin-instrumentation-hapi": "0.7.1",
-    "zipkin-transport-http": "0.7.1"
+    "zipkin": "0.7.3",
+    "zipkin-instrumentation-hapi": "0.7.3",
+    "zipkin-transport-http": "0.7.3"
   }
 }
