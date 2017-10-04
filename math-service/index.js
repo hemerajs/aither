@@ -23,7 +23,7 @@ hemera.use(HemeraZipkin, {
 hemera.setOption('payloadValidator', 'hemera-joi')
 
 hemera.ready(() => {
-  let Joi = hemera.exposition['hemera-joi'].joi
+  let Joi = hemera.joi
 
   hemera.add({
     topic: 'math',

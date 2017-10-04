@@ -7,12 +7,12 @@
   "license": "ISC",
   "dependencies": {
     "boom": "5.2.0",
-    "hapi": "16.5.0",
-    "hapi-hemera": "0.2.2",
-    "hemera-zipkin": "1.1.1",
-    "nats": "0.7.20",
-    "zipkin": "0.7.3",
-    "zipkin-instrumentation-hapi": "0.7.3",
-    "zipkin-transport-http": "0.7.3"
+    "hapi": "16.6.x",
+    "hapi-hemera": "1.0.x",
+    "hemera-zipkin": "2.0.x",
+    "nats": "0.7.x",
+    "zipkin": "0.9.0",
+    "zipkin-instrumentation-hapi": "0.9.0",
+    "zipkin-transport-http": "0.9.0"
   }
 }

@@ -39,7 +39,6 @@ server.register([{
       options: {
         host: process.env.ZIPKIN_URL,
         port: process.env.ZIPKIN_PORT
-
       }
     }],
     basePattern: function (request) {

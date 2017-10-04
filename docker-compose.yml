@@ -32,7 +32,7 @@ services:
       ZIPKIN_PORT: 9411
       API_PORT: 8789
       API_HOST: 0.0.0.0
-      HEMERA_LOG_LEVEL: debug
+      HEMERA_LOG_LEVEL: error
 
   math-service:
     build:
@@ -50,7 +50,7 @@ services:
       NATS_PW: T0pS3cr3t
       ZIPKIN_URL: zipkin
       ZIPKIN_PORT: 9411
-      HEMERA_LOG_LEVEL: silent
+      HEMERA_LOG_LEVEL: error
 
   cache-service:
     build:
@@ -71,7 +71,7 @@ services:
       NATS_PW: T0pS3cr3t
       ZIPKIN_URL: zipkin
       ZIPKIN_PORT: 9411
-      HEMERA_LOG_LEVEL: info
+      HEMERA_LOG_LEVEL: error
 
   natsboard:
     build:
