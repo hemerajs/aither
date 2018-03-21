@@ -43,21 +43,27 @@ Print the html artillery report with `artillery report <report.json>`
 http://localhost:8182/api/add?a=1&b=10
 ```
 
-### Traefik dashboard
+## Traefik dashboard
 
 [http://localhost:8181/](http://localhost:8181/)
 
-### NATS dashboard
+## NATS dashboard
 
-[http://localhost:3000/](http://localhost:3000/)
+![nats](/nats.png)
 
-### NATS monitoring endpoint
+Open [http://localhost:3000/](http://localhost:3000/)
 
-[http://localhost:8222/](http://localhost:8222/)
+## NATS monitoring endpoint
 
-### Jaeger dashboard
+![nats-monitoring](/nats-monitoring.png)
 
-[http://localhost:16686/](http://localhost:16686/)
+Open [http://localhost:8222/](http://localhost:8222/)
+
+## Jaeger dashboard
+
+![jaeger](/jaeger.png)
+
+Open [http://localhost:16686/](http://localhost:16686/)
 
 ## Example test on Digitalocean
 
@@ -66,7 +72,7 @@ http://localhost:8182/api/add?a=1&b=10
 * **Load balancing**: Traefik in round-roubin for API services. NATS supports random only.
 * **Caching**: No
 
-#### Load-test:
+## Load-test:
 * **Step-1**: Warm-up phase
 -
 
@@ -76,7 +82,7 @@ http://localhost:8182/api/add?a=1&b=10
 * **Step-3**: High load phase
 -
 
-#### Result:
+## Result:
 ```
 ```
 

@@ -1,7 +1,10 @@
 const Hapi = require('hapi')
 const Boom = require('boom')
+const HapiHemera = require('hapi-hemera')
 
-const server = new Hapi.Server()
+const server = new Hapi.Server({
+  port: process.env.API_PORT
+})
 
 async function start() {
   await server.register({
@@ -22,7 +25,7 @@ async function start() {
         {
           register: require('hemera-jaeger'),
           options: {
-            serviceName: 'math',
+            serviceName: 'api',
             jaeger: {
               sampler: {
                 type: 'Const',
@@ -55,7 +58,7 @@ async function start() {
           b: request.query.b,
           refresh: !!request.query.refresh
         })
-        return resp.data
+        return resp
       } catch (err) {
         console.error(err)
         return Boom.badRequest(err.message)
@@ -67,3 +70,5 @@ async function start() {
 
   console.log(`Server running at: ${server.info.uri}`)
 }
+
+start()

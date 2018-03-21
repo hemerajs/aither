@@ -16,19 +16,14 @@ services:
       context: "./api"
     depends_on:
       - nats
-      - jaeger-agent
-    links:
-      - jaeger-agent
-    labels:
-      - "traefik.backend=api"
-      - "traefik.frontend.rule=PathPrefix: /api"
-      - "traefik.port=8789"
-      - "traefik.frontend.entryPoints=http"
+      - jaeger
+    ports:
+      - "8789:8789"
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      JAEGER_URL: jaeger-agent
+      JAEGER_URL: jaeger
       API_PORT: 8789
       API_HOST: 0.0.0.0
       HEMERA_LOG_LEVEL: error
@@ -38,16 +33,16 @@ services:
       context: "./math-service"
     links:
       - nats
-      - jaeger-agent
     depends_on:
       - nats
       - redis
+      - jaeger
     restart: always
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      JAEGER_URL: jaeger-agent
+      JAEGER_URL: jaeger
       HEMERA_LOG_LEVEL: error
 
   cache-service:
@@ -55,7 +50,6 @@ services:
       context: "./cache-service"
     links:
       - nats
-      - jaeger-agent
       - redis
     depends_on:
       - nats
@@ -67,7 +61,6 @@ services:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      JAEGER_URL: jaeger-agent
       HEMERA_LOG_LEVEL: error
 
   natsboard:
@@ -81,16 +74,6 @@ services:
       - "3000:3000"
       - "3001:3001"
 
-  traefik:
-    image: traefik
-    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
-    ports:
-      - "8182:80"
-      - "8181:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
-
   redis:
     image: redis:alpine
     expose:
@@ -98,44 +81,13 @@ services:
     ports:
       - "6379:6379"
 
-  jaeger-collector:
-    image: jaegertracing/jaeger-collector
-    command: ["/go/bin/collector-linux", "--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra", "--collector.zipkin.http-port=9411"]
+  jaeger:
+    image: jaegertracing/all-in-one:latest
     ports:
-      - "14269"
-      - "14268:14268"
-      - "14267"
-      - "9411:9411"
-    restart: on-failure
-    depends_on:
-      - cassandra-schema
-
-  jaeger-query:
-    image: jaegertracing/jaeger-query
-    command: ["/go/bin/query-linux", "--query.static-files=/go/jaeger-ui/", "--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra"]
-    ports:
-      - "16686:16686"
-      - "16687"
-    restart: on-failure
-    depends_on:
-      - cassandra-schema
-
-  jaeger-agent:
-    image: jaegertracing/jaeger-agent
-    command: ["/go/bin/agent-linux", "--collector.host-port=jaeger-collector:14267"]
-    ports:
-      - "5775:5775/udp"
-      - "6831:6831/udp"
-      - "6832:6832/udp"
+      - "6832:6832"
       - "5778:5778"
-    restart: on-failure
-    depends_on:
-      - jaeger-collector
-
-  cassandra:
-    image: cassandra:3.9
-
-  cassandra-schema:
-    image: jaegertracing/jaeger-cassandra-schema
-    depends_on:
-      - cassandra
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"
+    environment: 
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411

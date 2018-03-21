@@ -69,17 +69,17 @@ async function start() {
         return result
       } else {
         // check cache
-        await this.act({
+        const resp = await this.act({
           topic: 'redis-cache',
           cmd: 'get',
           key: key
         })
 
-        if (resp) {
+        if (resp.data) {
           // mark this request as cached for zipkin
           ma.delegate$.cache = 'Redis:HIT'
 
-          return resp
+          return resp.data
         }
 
         // big operation
