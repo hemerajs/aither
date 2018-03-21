@@ -3,7 +3,7 @@
 # aither
 
 Aither shows an approach how to bootstrap a microservice system with [Hemera 5](https://github.com/hemerajs/hemera) and docker.
-You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to carry about service-discovery or load-balancing of hemera-services. We use traefik to load-balancing the api-gateway.
+You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to worry about service-discovery or load-balancing of hemera-services. We use traefik to load-balancing the api-gateway.
 
 This configuration will setup:
 
