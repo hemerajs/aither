@@ -16,9 +16,9 @@ services:
       context: "./api"
     depends_on:
       - nats
-      - zipkin
+      - jaeger-agent
     links:
-      - zipkin
+      - jaeger-agent
     labels:
       - "traefik.backend=api"
       - "traefik.frontend.rule=PathPrefix: /api"
@@ -28,8 +28,7 @@ services:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
+      JAEGER_URL: jaeger-agent
       API_PORT: 8789
       API_HOST: 0.0.0.0
       HEMERA_LOG_LEVEL: error
@@ -39,7 +38,7 @@ services:
       context: "./math-service"
     links:
       - nats
-      - zipkin
+      - jaeger-agent
     depends_on:
       - nats
       - redis
@@ -48,8 +47,7 @@ services:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
+      JAEGER_URL: jaeger-agent
       HEMERA_LOG_LEVEL: error
 
   cache-service:
@@ -57,7 +55,7 @@ services:
       context: "./cache-service"
     links:
       - nats
-      - zipkin
+      - jaeger-agent
       - redis
     depends_on:
       - nats
@@ -69,8 +67,7 @@ services:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
+      JAEGER_URL: jaeger-agent
       HEMERA_LOG_LEVEL: error
 
   natsboard:
@@ -83,41 +80,6 @@ services:
     ports:
       - "3000:3000"
       - "3001:3001"
-
-  zipkin-storage:
-    image: openzipkin/zipkin-mysql
-    container_name: mysql
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    expose:
-      - "9411"
-    ports:
-      # Listen port for the Scribe transport
-      - 9410:9410
-      # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
-    environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_HOST=mysql
-    depends_on:
-      - zipkin-storage
-
-  zipkin-dependencies:
-    image: openzipkin/zipkin-dependencies
-    container_name: zipkin-dependencies
-    entrypoint: crond -f
-    environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_HOST=mysql
-      # Add the baked-in username and password for the zipkin-mysql image
-      - MYSQL_USER=zipkin
-      - MYSQL_PASS=zipkin
-      # Uncomment to adjust memory used by the dependencies job
-      # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
-    depends_on:
-      - zipkin-storage
 
   traefik:
     image: traefik
@@ -135,3 +97,45 @@ services:
       - "6379"
     ports:
       - "6379:6379"
+
+  jaeger-collector:
+    image: jaegertracing/jaeger-collector
+    command: ["/go/bin/collector-linux", "--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra", "--collector.zipkin.http-port=9411"]
+    ports:
+      - "14269"
+      - "14268:14268"
+      - "14267"
+      - "9411:9411"
+    restart: on-failure
+    depends_on:
+      - cassandra-schema
+
+  jaeger-query:
+    image: jaegertracing/jaeger-query
+    command: ["/go/bin/query-linux", "--query.static-files=/go/jaeger-ui/", "--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra"]
+    ports:
+      - "16686:16686"
+      - "16687"
+    restart: on-failure
+    depends_on:
+      - cassandra-schema
+
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent
+    command: ["/go/bin/agent-linux", "--collector.host-port=jaeger-collector:14267"]
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+    restart: on-failure
+    depends_on:
+      - jaeger-collector
+
+  cassandra:
+    image: cassandra:3.9
+
+  cassandra-schema:
+    image: jaegertracing/jaeger-cassandra-schema
+    depends_on:
+      - cassandra

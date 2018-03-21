@@ -1,90 +1,102 @@
 const Hemera = require('nats-hemera')
 const HemeraJoi = require('hemera-joi')
-const HemeraZipkin = require('hemera-zipkin')
+const HemeraJaeger = require('hemera-jaeger')
 const nats = require('nats').connect({
-  'url': process.env.NATS_URL,
-  'user': process.env.NATS_USER,
-  'pass': process.env.NATS_PW
+  url: process.env.NATS_URL,
+  user: process.env.NATS_USER,
+  pass: process.env.NATS_PW
 })
-
 const hemera = new Hemera(nats, {
   logLevel: process.env.HEMERA_LOG_LEVEL,
   childLogger: true,
   tag: 'hemera-math'
 })
 
-hemera.use(HemeraJoi)
-hemera.use(HemeraZipkin, {
-  host: process.env.ZIPKIN_URL,
-  port: process.env.ZIPKIN_PORT,
-  sampling: 1
-})
+let sampleOperation = (a, b) => {
+  return a + b
+}
 
-hemera.setOption('payloadValidator', 'hemera-joi')
+async function start() {
+  hemera.use(HemeraJoi)
+  hemera.use(HemeraJaeger, {
+    serviceName: 'math',
+    jaeger: {
+      sampler: {
+        type: 'Const',
+        options: true
+      },
+      options: {
+        tags: {
+          'nodejs.version': process.versions.node
+        }
+      },
+      reporter: {
+        host: process.env.JAEGER_URL
+      }
+    }
+  })
 
-hemera.ready(() => {
+  await hemera.ready()
+
   let Joi = hemera.joi
 
-  hemera.add({
-    topic: 'math',
-    cmd: 'add',
-    a: Joi.number().required(),
-    b: Joi.number().required(),
-    refresh: Joi.boolean().default(false)
-  }, function (req, cb) {
-    let key = `math:add_${req.a}_${req.b}`
-    let ma = this
-    let result
+  hemera.add(
+    {
+      topic: 'math',
+      cmd: 'add',
+      a: Joi.number().required(),
+      b: Joi.number().required(),
+      refresh: Joi.boolean().default(false)
+    },
+    async function(req) {
+      let key = `math:add_${req.a}_${req.b}`
+      let ma = this
+      let result
 
-    let operation = (a, b) => {
-      return a + b
-    }
+      // no cache
+      if (req.refresh) {
+        // big operation
+        result = sampleOperation(req.a, req.b)
 
-    // no cache
-    if (req.refresh) {
-      // big operation
-      result = operation(req.a, req.b)
+        // update cache
+        await this.act({
+          topic: 'redis-cache',
+          cmd: 'set',
+          key: key,
+          value: result
+        })
 
-      // update cache
-      this.act({
-        topic: 'redis-cache',
-        cmd: 'set',
-        key: key,
-        value: result
-      }, function () {
-        return cb(null, result)
-      })
-    } else {
-      // check cache
-      this.act({
-        topic: 'redis-cache',
-        cmd: 'get',
-        key: key
-      }, function (err, resp) {
-        if (err) {
-          return cb(err)
-        }
+        return result
+      } else {
+        // check cache
+        await this.act({
+          topic: 'redis-cache',
+          cmd: 'get',
+          key: key
+        })
 
         if (resp) {
           // mark this request as cached for zipkin
           ma.delegate$.cache = 'Redis:HIT'
 
-          return cb(null, resp)
+          return resp
         }
 
         // big operation
-        result = operation(req.a, req.b)
+        result = sampleOperation(req.a, req.b)
 
         // update cache
-        this.act({
+        await this.act({
           topic: 'redis-cache',
           cmd: 'set',
           key: key,
           value: result
-        }, function () {
-          cb(null, result)
         })
-      })
+
+        return result
+      }
     }
-  })
-})
+  )
+}
+
+start()

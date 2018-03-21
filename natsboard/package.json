@@ -6,6 +6,6 @@
   "author": "Dustin Deus <deusdustin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "natsboard": "4.0.2"
+    "natsboard": "5.0.0"
   }
 }

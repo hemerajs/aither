@@ -2,9 +2,9 @@ const Hemera = require('nats-hemera')
 const HemeraJoi = require('hemera-joi')
 const HemeraRedisCache = require('hemera-redis-cache')
 const nats = require('nats').connect({
-  'url': process.env.NATS_URL,
-  'user': process.env.NATS_USER,
-  'pass': process.env.NATS_PW
+  url: process.env.NATS_URL,
+  user: process.env.NATS_USER,
+  pass: process.env.NATS_PW
 })
 
 const hemera = new Hemera(nats, {
@@ -21,4 +21,7 @@ hemera.use(HemeraRedisCache, {
   }
 })
 
-hemera.ready()
+hemera
+  .ready()
+  .then(() => console.log('Redis service listering ...'))
+  .catch(err => console.error(err, 'Redis service error'))
