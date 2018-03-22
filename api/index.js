@@ -3,7 +3,8 @@ const Boom = require('boom')
 const HapiHemera = require('hapi-hemera')
 
 const server = new Hapi.Server({
-  port: process.env.API_PORT
+  port: process.env.API_PORT,
+  host: process.env.API_HOST
 })
 
 async function start() {

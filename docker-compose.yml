@@ -10,6 +10,7 @@ services:
       - "4222:4222"
       - "8222:8222"
     hostname: nats-server
+    restart: always
 
   api:
     build:
@@ -17,8 +18,12 @@ services:
     depends_on:
       - nats
       - jaeger
-    ports:
-      - "8789:8789"
+    labels:
+      - "traefik.backend=api"
+      - "traefik.frontend.rule=PathPrefix: /api"
+      - "traefik.port=8789"
+      - "traefik.frontend.entryPoints=http"
+    restart: always
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
@@ -91,3 +96,13 @@ services:
       - "9411:9411"
     environment: 
       COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - "8182:80"
+      - "8181:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
