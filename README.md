@@ -1,7 +1,7 @@
 ![aither](https://github.com/hemerajs/aither/blob/master/logo.png?raw=true)
 # aither
 
-Aither shows an approach how to bootstrap a microservice system with [Hemera 5](https://hemerajs.github.io/hemera/) and docker.
+Aither shows an approach how to bootstrap a microservice system in Node.js with [Hemera 5](https://hemerajs.github.io/hemera/) and docker.
 You can scale your worker in seconds and because we use NATS as “nervous system" for our distributed system we do not have to worry about service-discovery or load-balancing of hemera-services. We use traefik to load-balancing the api-gateway.
 
 This configuration will setup:
@@ -13,6 +13,10 @@ This configuration will setup:
 * [Natsboard](https://github.com/devfacet/natsboard) dashboard to monitoring your NATS system in realtime.
 * [Traefik](https://traefik.io/) modern HTTP reverse proxy and load balancer made to deploy microservices with ease.
 * [Redis](https://redis.io) in memory cache for Hemera.
+
+## Versions
+ * Hapi 17
+ * Hemera 5
 
 ## Architecture
 
