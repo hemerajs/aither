@@ -10,26 +10,25 @@ services:
       - "4222:4222"
       - "8222:8222"
     hostname: nats-server
+    restart: always
 
   api:
     build:
       context: "./api"
     depends_on:
       - nats
-      - zipkin
-    links:
-      - zipkin
+      - jaeger
     labels:
       - "traefik.backend=api"
       - "traefik.frontend.rule=PathPrefix: /api"
       - "traefik.port=8789"
       - "traefik.frontend.entryPoints=http"
+    restart: always
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
+      JAEGER_URL: jaeger
       API_PORT: 8789
       API_HOST: 0.0.0.0
       HEMERA_LOG_LEVEL: error
@@ -39,17 +38,16 @@ services:
       context: "./math-service"
     links:
       - nats
-      - zipkin
     depends_on:
       - nats
       - redis
+      - jaeger
     restart: always
     environment:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
+      JAEGER_URL: jaeger
       HEMERA_LOG_LEVEL: error
 
   cache-service:
@@ -57,7 +55,6 @@ services:
       context: "./cache-service"
     links:
       - nats
-      - zipkin
       - redis
     depends_on:
       - nats
@@ -69,8 +66,6 @@ services:
       NATS_URL: nats://nats:4222
       NATS_USER: ruser
       NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
       HEMERA_LOG_LEVEL: error
 
   natsboard:
@@ -84,40 +79,23 @@ services:
       - "3000:3000"
       - "3001:3001"
 
-  zipkin-storage:
-    image: openzipkin/zipkin-mysql
-    container_name: mysql
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
+  redis:
+    image: redis:alpine
     expose:
-      - "9411"
+      - "6379"
     ports:
-      # Listen port for the Scribe transport
-      - 9410:9410
-      # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
-    environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_HOST=mysql
-    depends_on:
-      - zipkin-storage
+      - "6379:6379"
 
-  zipkin-dependencies:
-    image: openzipkin/zipkin-dependencies
-    container_name: zipkin-dependencies
-    entrypoint: crond -f
-    environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_HOST=mysql
-      # Add the baked-in username and password for the zipkin-mysql image
-      - MYSQL_USER=zipkin
-      - MYSQL_PASS=zipkin
-      # Uncomment to adjust memory used by the dependencies job
-      # - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
-    depends_on:
-      - zipkin-storage
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6832:6832"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"
+    environment: 
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
 
   traefik:
     image: traefik
@@ -128,10 +106,3 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
-
-  redis:
-    image: redis:alpine
-    expose:
-      - "6379"
-    ports:
-      - "6379:6379"
