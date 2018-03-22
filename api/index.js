@@ -1,5 +1,4 @@
 const Hapi = require('hapi')
-const Boom = require('boom')
 const HapiHemera = require('hapi-hemera')
 
 const server = new Hapi.Server({
