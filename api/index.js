@@ -4,7 +4,8 @@ const HapiHemera = require('hapi-hemera')
 
 const server = new Hapi.Server({
   port: process.env.API_PORT,
-  host: process.env.API_HOST
+  host: process.env.API_HOST,
+  debug: { request: ['error'] }
 })
 
 async function start() {
@@ -51,19 +52,13 @@ async function start() {
     method: 'GET',
     path: '/api/add',
     handler: async (request, h) => {
-      try {
-        const resp = await request.hemera.act({
-          topic: 'math',
-          cmd: 'add',
-          a: request.query.a,
-          b: request.query.b,
-          refresh: !!request.query.refresh
-        })
-        return resp
-      } catch (err) {
-        console.error(err)
-        return Boom.badRequest(err.message)
-      }
+      return request.hemera.act({
+        topic: 'math',
+        cmd: 'add',
+        a: request.query.a,
+        b: request.query.b,
+        refresh: !!request.query.refresh
+      })
     }
   })
 

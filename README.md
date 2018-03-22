@@ -22,29 +22,11 @@ This configuration will setup:
 
 ![aither](https://github.com/hemerajs/aither/blob/master/aither-architecture.png?raw=true)
 
-## Running the system
-```sh
-docker-compose up
-```
 
-## Scaling the system
-```
-docker-compose scale math-service=5 api=2
-```
-
-## Run load test
-
-```
-npm install -g artillery
-artillery run loadtest.yml
-```
-Print the html artillery report with `artillery report <report.json>`
-
-## Start a request against load balancer
-
-```
-http://localhost:8182/api/add?a=1&b=10
-```
+## Getting started
+* Running the system `docker-compose up`
+* Start a request against load balancer [OPEN](http://localhost:8182/api/add?a=1&b=10)
+* Scale the system `docker-compose scale math-service=5 api=2`
 
 ## Dashboards
 
@@ -52,6 +34,14 @@ http://localhost:8182/api/add?a=1&b=10
 - NATS Dashboard [http://localhost:3000/](http://localhost:3000/)
 - NATS Endpoint [http://localhost:8222/](http://localhost:8222/)
 - Jaeger [http://localhost:16686/](http://localhost:16686/)
+
+## Run load test
+
+```bash
+npm install -g artillery
+artillery run loadtest.yml
+```
+Print the html artillery report with `artillery report <report.json>`
 
 ## Previews
 
