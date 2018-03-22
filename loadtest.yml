@@ -1,11 +1,20 @@
+# A warm up phase with the arrival rate of 5 virtual users/second that last for 60 seconds. This phase is short and light to allow the application to warm up.
+# A ramp up phase where we go from 5 to 50 new virtual user arrivals over 120 seconds.
+# The final high load phase with the arrival rate of 50 that lasts for 600 seconds.
+
+
 config:
   target: "http://localhost:8182"
   phases:
-    #Ramp up arrival rate from 25 to 50 over 2 minutes:
-  -
-    duration: 30
-    arrivalRate: 100
+    - duration: 60
+      arrivalRate: 5
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+    - duration: 600
+      arrivalRate: 50
 scenarios:
-  - flow:
+  - name: "Add two numbers without cache"
+    flow:
       - get:
           url: "/api/add?a=4&b=80&refresh=true"
